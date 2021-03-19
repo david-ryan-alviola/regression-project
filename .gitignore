@@ -128,3 +128,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# scratch notebooks
+acquire.ipynb
+prepare.ipynb
+
+# generated files
+zillow.csv
