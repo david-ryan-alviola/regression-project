@@ -50,10 +50,7 @@ def _remove_outliers(zillow_df):
 def prepare_zillow(unprepared_zillow):
     prepped_data = {}
     
-    clean_zillow_df = _clean_zillow(unprepared_zillow)
-    prepped_data['population'] = clean_zillow_df
-    
-    train, validate, test = split_dataframe_continuous_target(clean_zillow_df, 'tax_value')
-    prepped_data['samples'] = generate_xy_splits(train, validate, test, 'tax_value', drop_columns=['fips', 'tax_amount'])
+    prepped_data['population'] = _clean_zillow(unprepared_zillow)
+    prepped_data['samples'] = split_dataframe_continuous_target(prepped_data['population'], 'tax_value')
     
     return prepped_data 
