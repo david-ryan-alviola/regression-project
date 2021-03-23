@@ -3,7 +3,7 @@ import env
 from utilities import generate_db_url, generate_df
 
 _zillow_query = """
-SELECT bathroomcnt, bedroomcnt, calculatedfinishedsquarefeet, taxvaluedollarcnt, taxamount, fips
+SELECT bathroomcnt, bedroomcnt, calculatedfinishedsquarefeet, taxvaluedollarcnt, taxamount, fips, yearbuilt
 	FROM properties_2017
 		JOIN predictions_2017 USING(parcelid)
 	WHERE (transactiondate BETWEEN '2017-05-01' AND '2017-08-31')
@@ -13,7 +13,8 @@ SELECT bathroomcnt, bedroomcnt, calculatedfinishedsquarefeet, taxvaluedollarcnt,
 		AND bedroomcnt IS NOT NULL
 		AND fips IS NOT NULL
 		AND taxvaluedollarcnt IS NOT NULL
-		AND taxamount IS NOT NULL;
+		AND taxamount IS NOT NULL
+        AND yearbuilt IS NOT NULL
 """
 
 def acquire_zillow():
