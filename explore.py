@@ -58,3 +58,13 @@ def test_hypothesis_correlation(var, target, train, null_hyp, alt_hyp, alpha=.05
 def test_hypothesis_ttest(target, sample, population, null_hyp, alt_hyp, alpha=.05):
     t, p = stats.ttest_1samp(sample[target], population[target].mean())
     evaluate_hypothesis_ttest(p, t, alpha, tails="greater", null_hypothesis=null_hyp, alternative_hypothesis=alt_hyp)
+    
+def plot_distributions(counties, x_value, group_key):
+    
+    for county in counties:
+        sns.distplot(county[x_value])
+        plt.title(county[group_key].unique())
+        plt.show()
+        print()
+        print(county[x_value].describe())
+        print("------------------------")

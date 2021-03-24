@@ -1,6 +1,8 @@
 import env
 import pandas as pd
+import sklearn as skl
 
+from sklearn.feature_selection import SelectKBest, f_regression, RFE
 from utilities import split_dataframe_continuous_target
 from datetime import date
 
@@ -69,4 +71,40 @@ def prepare_zillow(unprepared_zillow):
     prepped_data['population'] = _clean_zillow(unprepared_zillow)
     prepped_data['samples'] = split_dataframe_continuous_target(prepped_data['population'], 'tax_value')
     
-    return prepped_data 
+    return prepped_data
+
+def generate_scaled_splits(train, validate, test, scaler=skl.preprocessing.MinMaxScaler()):
+    scaler.fit(train)
+    
+    train_scaled = pd.DataFrame(scaler.transform(train), columns=train.columns)
+    validate_scaled = pd.DataFrame(scaler.transform(validate), columns=validate.columns)
+    test_scaled = pd.DataFrame(scaler.transform(test), columns=test.columns)
+    
+    return train_scaled, validate_scaled, test_scaled
+
+def rfe(predictors, targets, model_type, k=1):
+    model = model_type
+    
+    rfe = RFE(model, k)
+    rfe.fit(predictors, targets)
+
+    rfe_feature_mask = rfe.support_
+    
+    _print_ranks(rfe, predictors)
+
+    return predictors.iloc[:, rfe_feature_mask].columns.tolist()
+
+def select_kbest(predictors, targets, k=1):
+    f_selector = SelectKBest(f_regression, k=k)
+    f_selector.fit(predictors, targets)
+
+    feature_mask = f_selector.get_support()
+    
+    return predictors.iloc[:, feature_mask].columns.tolist()
+
+def _print_ranks(selector, predictors):
+    var_ranks = selector.ranking_
+    var_names = predictors.columns.tolist()
+
+    rfe_ranks_df = pd.DataFrame({'Var': var_names, 'Rank': var_ranks})
+    print(rfe_ranks_df.sort_values('Rank'))
