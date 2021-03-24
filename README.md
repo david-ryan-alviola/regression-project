@@ -66,7 +66,7 @@ bedrooms | The number of bedrooms a property has | float
 total_sqft | The square footage of a property | float
 fips_6037 | Indicates if a property is in FIPS county 6037 (Los Angeles County)| int
 fips_6059 | Indicates if a property is in FIPS county 6059 (Orange County)| int
-fips_6011 | Indicates if a property is in FIPS county 6011 (Colusa County)| int
+fips_6011 | Indicates if a property is in FIPS county 6111 (Ventura County)| int
 age | The difference between the current year and the year the property was built | float
 #### Other data
 Name | Description | Type
